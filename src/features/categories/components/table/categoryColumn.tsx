@@ -1,6 +1,8 @@
-import type { TableColumnsType } from "antd"
-import type { CategoryType } from "../../types/categories"
+import type { TableColumnsType } from "antd";
+import { Avatar, Flex } from "antd";
+import type { CategoryType } from "../../types/categories";
 import CategoryActions from "../CategoryActions";
+
 const columns: TableColumnsType<CategoryType> = [
   {
     title: "ID",
@@ -9,44 +11,36 @@ const columns: TableColumnsType<CategoryType> = [
     width: 100,
     render: (id) => id.slice(0, 8) + "...",
   },
-
   {
     title: "Category Name",
     dataIndex: "name",
     key: "name",
     render: (_, record) => (
-      `<Flex align="center" gap={12}>
+      <Flex align="center" gap={12}>
         <Avatar
           shape="square"
           size={48}
-          src={${record.image || undefined}}
-          style={{
-            // border: "1px solid #e5e7eb",
-            // borderRadius: 8,
-          }}
+          src={record.image || undefined}
         >
-          ${record.name?.charAt(0)}
+          {record.name?.charAt(0)}
         </Avatar>
 
         <span style={{ fontWeight: 500 }}>
-          ${record.name}
+          {record.name}
         </span>
-      </Flex>`
+      </Flex>
     ),
   },
-
   {
     title: "Products",
     key: "products",
     dataIndex: ["_count", "products"],
   },
-
   {
     title: "Order",
     dataIndex: "sortOrder",
     key: "sortOrder",
   },
-
   {
     title: "Created Date",
     dataIndex: "createdAt",
@@ -54,12 +48,13 @@ const columns: TableColumnsType<CategoryType> = [
     render: (date) =>
       new Date(date).toLocaleDateString("en-GB"),
   },
-
   {
     title: "Actions",
     key: "actions",
     render: (_, record) => (
-      <CategoryActions data={record}/>
+      <CategoryActions data={record} />
     ),
   },
 ];
+
+export default columns;
