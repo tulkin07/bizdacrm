@@ -4,6 +4,7 @@ import RemoteImg from "../../../components/RemoteImg";
 import useOrders from "../hooks/useOrders";
 import type { OrderApi, OrderRow } from "../types/order";
 import OrderActions from "./OrderActions";
+import { orderStatus } from "../../../constants/order-status";
 
 function TableThumb({
   src,
@@ -73,14 +74,15 @@ const columns: ColumnsType<OrderRow> = [
     title: "Status",
     dataIndex: "status",
     width: 130,
-    render: (status: string) => {
+    render: (status:"DELIVERED" | "PENDING" | "SHIPPED" | "CANCELLED") => {      
+      
       const colors: Record<string, string> = {
         DELIVERED: "green",
         PENDING: "orange",
         SHIPPED: "blue",
         CANCELLED: "red",
       };
-      return <Tag color={colors[status] || "default"}>{status}</Tag>;
+      return <Tag color={colors[status] || "default"}>{orderStatus[status].title}</Tag>;
     },
   },
   {
@@ -125,7 +127,7 @@ export default function OrderManagementTable({ status = "all" }: { status?: stri
 
   return (
     <Table<OrderRow>
-      className="data-table"
+      // className="data-table"
       loading={isLoading}
       columns={columns}
       dataSource={filtered}

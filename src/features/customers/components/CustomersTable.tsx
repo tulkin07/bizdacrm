@@ -51,7 +51,7 @@ export default function CustomersTable() {
 
   return (
     <Table<Customer>
-      className="data-table"
+      // className="data-table"
       rowKey="id"
       loading={isLoading}
       columns={columns}

@@ -72,7 +72,7 @@ export default function BrandTable() {
       columns={columns}
       dataSource={brands?.data ?? []}
       loading={isLoading}
-      className="data-table"
+      // className="data-table"
       pagination={{ pageSize: 10, showSizeChanger: true }}
     />
   );

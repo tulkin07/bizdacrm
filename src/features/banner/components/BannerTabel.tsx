@@ -77,7 +77,7 @@ export default function BannerTabel() {
       dataSource={banners?.data ?? []}
       loading={isLoading}
       pagination={{ pageSize: 10, showSizeChanger: true }}
-      className="data-table"
+      // className="data-table"
     />
   );
 }

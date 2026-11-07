@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import {
   ArrowLeft,
   CalendarDays,
@@ -19,6 +19,7 @@ import Skeleton from "../../../components/Skeleton";
 import RemoteImg from "../../../components/RemoteImg";
 import useOrdersDetails from "../hooks/useOrdersDetails";
 import useOrderNotesUpdate from "../hooks/useOrderNotesUpdate";
+import { orderStatusOptions, type OrderStatus } from "../../../constants/order-status";
 
 const statusTone: Record<string, string> = {
   DELIVERED: "tone-success",
@@ -54,6 +55,8 @@ function formatDate(date: string) {
   });
 }
 
+
+
 function paymentLabel(method?: string) {
   return method === "CASH_ON_DELIVERY" ? "Cash" : method?.replaceAll("_", " ");
 }
@@ -67,7 +70,11 @@ export default function OrderDetails() {
   const { updateOrderNotes, isPending } = useOrderNotesUpdate()
 
   // updateOrderNotes({values:notes, id:id})
-  
+
+  const onFinish = (values:any)=>{
+updateOrderNotes({values, id})
+}
+
 
   if (isLoading) {
     return (
@@ -297,7 +304,7 @@ export default function OrderDetails() {
         <section className="card">
           <div className="mb-3 flex items-center justify-between gap-2">
             <div>
-              <h3 className="section-title">Notes</h3>
+              <h3 className="section-title">Notes va status</h3>
               <p className="text-[11px] text-muted">Internal comment</p>
             </div>
             {!isEditingNotes ? (
@@ -312,29 +319,38 @@ export default function OrderDetails() {
           {isEditingNotes ? (
             <div className="space-y-3">
 
-              <Form>
+              <Form onFinish={onFinish}>
                 <Form.Item
+                name={"comment"}
                 >
                   <Input
-                  className="pb-10!"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
+                    className="pb-10!"
                     placeholder="Add a note..."
                   />
                 </Form.Item>
-              </Form>
-              <div className="flex justify-end gap-2">
-                <Button  onClick={() => setIsEditingNotes(false)}>
-                  Cancel
-                </Button>
+                <Form.Item name="status">
+                  <Select<OrderStatus>
+                    placeholder="Buyurtma holatini tanlang"
+                    options={orderStatusOptions}
+                    allowClear
+                    showSearch
+                    defaultValue={order?.status}
+                  />
+                </Form.Item>
                 <Button
                   type="primary"
                   loading={isPending}
                   icon={<Save size={13} />}
-                  onClick={() => updateOrderNotes({values:notes, id:id})}
+                  htmlType="submit"
                 >
                   Save
                 </Button>
+              </Form>
+              <div className="flex justify-end gap-2">
+                <Button onClick={() => setIsEditingNotes(false)}>
+                  Cancel
+                </Button>
+                
               </div>
             </div>
           ) : (
@@ -353,12 +369,12 @@ export default function OrderDetails() {
                 <div key={`${history.status}-${history.createdAt}-${index}`} className="flex gap-3">
                   <div className="flex flex-col items-center">
                     <span className={`mt-1.5 h-2.5 w-2.5 rounded-full ${statusTone[history.status] === "tone-success"
-                        ? "bg-[var(--app-success)]"
-                        : statusTone[history.status] === "tone-danger"
-                          ? "bg-[var(--app-danger)]"
-                          : statusTone[history.status] === "tone-warning"
-                            ? "bg-[var(--app-warning)]"
-                            : "bg-brand"
+                      ? "bg-[var(--app-success)]"
+                      : statusTone[history.status] === "tone-danger"
+                        ? "bg-[var(--app-danger)]"
+                        : statusTone[history.status] === "tone-warning"
+                          ? "bg-[var(--app-warning)]"
+                          : "bg-brand"
                       }`} />
                     {index < order.statusHistory.length - 1 ? (
                       <span className="mt-1 w-px flex-1 bg-line" />

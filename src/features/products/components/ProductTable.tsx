@@ -98,7 +98,7 @@ export default function ProductTable() {
 
   return (
     <Table<ProductRow>
-      className="data-table"
+      // className="data-table"
       rowKey="id"
       loading={isLoading}
       columns={columns}

@@ -48,7 +48,7 @@ export default function TableCategories() {
 
   return (
     <Table<CategoryType>
-      className="data-table"
+      // className="data-table"
       rowKey="id"
       loading={isLoading}
       columns={columns}

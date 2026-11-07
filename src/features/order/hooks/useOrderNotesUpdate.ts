@@ -5,12 +5,12 @@ import api from "../../../services/api";
 const useOrderNotesUpdate = () => {
   const query = useQueryClient();
   const { mutate: updateOrderNotes, isPending } = useMutation({
-    mutationKey: ["update-order-notes"],
-    mutationFn: ({ values, id }: { values: string; id?: string }) =>
-      api.patch(`/admin/orders/${id}`, { notes: values }),
+    mutationKey: ["update-order-status"],
+    mutationFn: ({ values, id}: { values: string; id?: string }) =>
+      api.patch(`/admin/orders/${id}/status`, values),
     onSuccess: () => {
-      message.success("Order notes updated");
-      query.invalidateQueries({ queryKey: ["orders"] });
+      message.success("Order status updated");
+      query.invalidateQueries({ queryKey: ["orders-details"] });
     },
     onError: () => {
       message.error("Error");
