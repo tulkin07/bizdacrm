@@ -11,7 +11,7 @@ const useOrderNotesUpdate = () => {
       api.patch(`/admin/orders/${id}/status`, values),
     onSuccess: () => {
       message.success("Order status updated");
-      query.invalidateQueries({ queryKey: ["orders-details"] });
+      query.invalidateQueries({ queryKey: ["orderdetails"] });
     },
     onError: () => {
       message.error("Error");

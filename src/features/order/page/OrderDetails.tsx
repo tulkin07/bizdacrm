@@ -92,24 +92,20 @@ export default function OrderDetails() {
   // Save notes and status
   const onFinish = (values: OrderNotesFormValues) => {
     if (!id) return;
-    
+
     updateOrderNotes({
       values,
       id,
+    },{
+      onSuccess:()=>{
+        
+      }
     });
-
     setIsEditingNotes(false);
   };
 
-  // Start editing
-  const handleEditNotes = () => {
-    form.setFieldsValue({
-      comment: order?.notes || "",
-      status: order?.status as OrderStatus,
-    });
 
-    setIsEditingNotes(true);
-  };
+
 
   // Cancel editing
   const handleCancelEdit = () => {
@@ -231,16 +227,14 @@ export default function OrderDetails() {
             steps.map((step, index) => (
               <div key={step} className="contents">
                 <div
-                  className={`order-step ${
-                    index <= currentStep ? "is-done" : ""
-                  } ${index === currentStep ? "is-current" : ""}`}
+                  className={`order-step ${index <= currentStep ? "is-done" : ""
+                    } ${index === currentStep ? "is-current" : ""}`}
                 >
                   <span className="order-step-dot" />
 
                   <span
-                    className={`text-[11px] font-semibold ${
-                      index <= currentStep ? "text-brand" : "text-muted"
-                    }`}
+                    className={`text-[11px] font-semibold ${index <= currentStep ? "text-brand" : "text-muted"
+                      }`}
                   >
                     {step.charAt(0) + step.slice(1).toLowerCase()}
                   </span>
@@ -248,9 +242,8 @@ export default function OrderDetails() {
 
                 {index < steps.length - 1 ? (
                   <span
-                    className={`order-step-line ${
-                      index < currentStep ? "is-done" : ""
-                    }`}
+                    className={`order-step-line ${index < currentStep ? "is-done" : ""
+                      }`}
                   />
                 ) : null}
               </div>
@@ -472,7 +465,7 @@ export default function OrderDetails() {
               </p>
             </div>
 
-            {!isEditingNotes && (
+            {/* {!isEditingNotes && (
               <button
                 type="button"
                 className="icon-btn h-8 w-8"
@@ -481,71 +474,73 @@ export default function OrderDetails() {
               >
                 <Pencil size={14} />
               </button>
-            )}
+            )} */}
           </div>
-
-          {isEditingNotes ? (
-            <Form<OrderNotesFormValues>
-              form={form}
-              layout="vertical"
-              initialValues={{
-                comment: order.notes || "",
-                status: order.status as OrderStatus,
-              }}
-              onFinish={onFinish}
-            >
-              <Form.Item
-                name="comment"
-                label="Comment"
-              >
-                <Input.TextArea
-                  rows={4}
-                  placeholder="Add a note..."
-                  maxLength={1000}
-                  showCount
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="status"
-                label="Order status"
-                rules={[
-                  {
-                    required: true,
-                    message: "Buyurtma holatini tanlang",
-                  },
-                ]}
-              >
-                <Select<OrderStatus>
-                  placeholder="Buyurtma holatini tanlang"
-                  options={orderStatusOptions}
-                  showSearch
-                />
-              </Form.Item>
-
-              <div className="flex justify-end gap-2">
-                <Button
-                  onClick={handleCancelEdit}
-                  disabled={isPending}
-                >
-                  Cancel
-                </Button>
-
-                <Button
-                  type="primary"
-                  icon={<Save size={13} />}
-                  htmlType="submit"
-                  loading={isPending}
-                >
-                  Save
-                </Button>
-              </div>
-            </Form>
-          ) : (
-            <div className="rounded-2xl bg-canvas px-3 py-3 text-sm text-muted">
-              {order.notes || "No notes added."}
+          {
+            order?.notes && <div className="flex flex-col">
+              <label htmlFor="">Notes</label>
+              <span className="border border-gray-500 p-2 rounded-lg mb-3">{order?.notes}</span>
             </div>
-          )}
+          }
+
+
+
+          <Form<OrderNotesFormValues>
+            form={form}
+            layout="vertical"
+            initialValues={{
+              status: order.status as OrderStatus,
+            }}
+            className="mt-3!"
+            onFinish={onFinish}
+          >
+            <Form.Item
+              name="comment"
+              label="Comment"
+            >
+              <Input.TextArea
+                rows={4}
+                placeholder="Add a note..."
+                maxLength={1000}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="status"
+              label="Order status"
+              rules={[
+                {
+                  required: true,
+                  message: "Buyurtma holatini tanlang",
+                },
+              ]}
+            >
+              <Select<OrderStatus>
+                placeholder="Buyurtma holatini tanlang"
+                options={orderStatusOptions}
+                showSearch
+              />
+            </Form.Item>
+
+            <div className="flex justify-end gap-2">
+              <Button
+                onClick={handleCancelEdit}
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                type="primary"
+                icon={<Save size={13} />}
+                htmlType="submit"
+                loading={isPending}
+              >
+                Save
+              </Button>
+            </div>
+          </Form>
+
         </section>
 
         {/* Order history */}
@@ -565,15 +560,14 @@ export default function OrderDetails() {
                 >
                   <div className="flex flex-col items-center">
                     <span
-                      className={`mt-1.5 h-2.5 w-2.5 rounded-full ${
-                        statusTone[history.status] === "tone-success"
-                          ? "bg-[var(--app-success)]"
-                          : statusTone[history.status] === "tone-danger"
-                            ? "bg-[var(--app-danger)]"
-                            : statusTone[history.status] === "tone-warning"
-                              ? "bg-[var(--app-warning)]"
-                              : "bg-brand"
-                      }`}
+                      className={`mt-1.5 h-2.5 w-2.5 rounded-full ${statusTone[history.status] === "tone-success"
+                        ? "bg-[var(--app-success)]"
+                        : statusTone[history.status] === "tone-danger"
+                          ? "bg-[var(--app-danger)]"
+                          : statusTone[history.status] === "tone-warning"
+                            ? "bg-[var(--app-warning)]"
+                            : "bg-brand"
+                        }`}
                     />
 
                     {index < order.statusHistory.length - 1 && (
