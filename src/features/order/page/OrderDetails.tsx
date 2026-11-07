@@ -6,14 +6,12 @@ import {
   Mail,
   MapPin,
   Package,
-  Pencil,
   Phone,
   Save,
   ShoppingBag,
   Truck,
   User,
 } from "lucide-react";
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Skeleton from "../../../components/Skeleton";
@@ -83,7 +81,6 @@ export default function OrderDetails() {
 
   const { order, isLoading } = useOrdersDetails(id || null);
 
-  const [isEditingNotes, setIsEditingNotes] = useState(false);
 
   const [form] = Form.useForm<OrderNotesFormValues>();
 
@@ -98,10 +95,9 @@ export default function OrderDetails() {
       id,
     },{
       onSuccess:()=>{
-        
+
       }
     });
-    setIsEditingNotes(false);
   };
 
 
@@ -110,7 +106,6 @@ export default function OrderDetails() {
   // Cancel editing
   const handleCancelEdit = () => {
     form.resetFields();
-    setIsEditingNotes(false);
   };
 
   // Loading
