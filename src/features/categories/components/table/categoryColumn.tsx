@@ -1,5 +1,6 @@
 import type { TableColumnsType } from "antd"
 import type { CategoryType } from "../../types/categories"
+import CategoryActions from "../CategoryActions";
 const columns: TableColumnsType<CategoryType> = [
   {
     title: "ID",
